@@ -31,7 +31,7 @@ class Fairness_criteria:
     def Independence(self, y_pred, features):
         for key, value in self.sensitive_dict.items():
             for v in value:
-                ''' For Debugging <3 
+                ''' For Debugging <3
                 print(self.columns[v])
                 print('y_pred 0.5 ' , (IntTensor.item(y_pred[0])>=0.5) )
                 print('y_pred ' , IntTensor.item(y_pred[0]) )

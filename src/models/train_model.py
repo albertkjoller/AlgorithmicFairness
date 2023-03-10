@@ -9,7 +9,7 @@ import time
 from tqdm import trange
 
 from src.models.model import AutoEncoder, FullyConnected, get_loss_function, get_optimizer, get_model
-from src.data.dataloader_including_sensitive import CatalanJuvenileJustice
+from src.data.dataloader import CatalanJuvenileJustice
 from src.evaluation.fairness_criteria import Fairness_criteria
 
 def set_seed(seed: int):
@@ -17,7 +17,7 @@ def set_seed(seed: int):
 
 #  ---------------  Training  ---------------
 def train(
-        datafolder_path: str, datafile_name: str = 'catalan_dataset.pth',
+        datafolder_path: str, datafile_name: str = 'included_catalan_dataset.pth',
         model_name: str = 'FullyConnected',
         batch_size: int = 128, num_workers: int = 1, test_proportion: float = 0.2, val_proportion: float = 0.2, split_type: str = 'random',
         lr=1e-3, epochs: int = 100, loss_type: str = 'BCE', optimizer: str = 'SGD', momentum: float = 0.9,
@@ -202,7 +202,7 @@ def train(
 
         print('\n-- Independence criteria --')
         for key, value in Independence_dict.items():
-            print(key, 'has the \"acceptance\" rate of: ', value/(epochs*len(iter(val_loader))))
+            print(key, ': ', value/(epochs*len(iter(val_loader))))
 
 
 if __name__ == '__main__':
@@ -210,12 +210,12 @@ if __name__ == '__main__':
     train(
         datafolder_path = 'data',
         model_name='AutoEncoder',
-        datafile_name='catalan_dataset_including_sensitive.pth',
+        datafile_name='excluded_catalan_dataset.pth',
         batch_size = 64, 
-        epochs = 20, 
+        epochs = 100, 
         lr=1e-4,
         loss_type='BCE',
         optimizer='Adam',
-        experiment_name=f'modelv1.0-AutoEncoder-no_sensitive_data.lr=1e-4',
+        experiment_name=f'modelv1.0-AutoEncoder-excluding_sensitive_data.lr=1e-4',
         save_path='models',
     )
